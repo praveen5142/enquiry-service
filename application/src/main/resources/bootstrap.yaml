@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: enquiry-service
+  profiles:
+    active: dev
+  h2:
+    console:
+      enabled: true 
+      path: /h2
+      settings:
+        web-allow-others: true
+
+springdoc:
+  api-docs:
+    enabled: true
+        
+server:
+  port: 8080
+              
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: "http://localhost:7999/eureka/"
+  instance:
+    prefer-ip-address: true
+    #hostname: "${COMPUTERNAME}"
+    
+#Disable security of the Management endpoint
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: [ "health","prometheus", "metrics" ]
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
