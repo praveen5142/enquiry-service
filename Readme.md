@@ -38,3 +38,12 @@
 		EX: While writing business logic for enquiry aggregate we can just create PORTS/INTERFACES for DAO and SERVICE layers and can 
 			implement later once done.
 	* Better Unit Testing.
+
+### Best Practices:
+	1)	Create Folder for each aggregate with its name instead of aggregate , valueobjects , entities named folders.
+	EX: Better folder structure:
+       com.dev.domain.User
+       com.dev.domain.Apartment
+	Benefits: Traversing is faster as business logic will revolve around aggregates. There are consistence boundaries around the entities 
+			  in aggregates soo it makes sense to put together in one folder. If you need to move some aggregates to another microservices 
+			  refracturing will be easier as we need to move one folder all together.
