@@ -5,7 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 
-import com.enquiry.domain.enquiry.repositories.IEnquiryRepository;
+import com.enquiry.infra.enquiry.repositories.EnquiryRepository;
+import com.enquiry.infra.enquiry.repositories.OwnerUpdateRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,13 +17,17 @@ import lombok.extern.slf4j.Slf4j;
 public class DatabaseConfigurer implements CommandLineRunner{
 
 	@Autowired
-	IEnquiryRepository repository;
+	EnquiryRepository repository;
+	
+	@Autowired
+	OwnerUpdateRepository ownerUpdateRepository;
+	
 	
 	@Override
 	public void run(String... args) throws Exception {
 		log.info("Starting database schema preparation!");
-		repository.createSchema().subscribe();
+		ownerUpdateRepository.createSchema()
+			.subscribe();
 		log.info("Database configured!");
 	}
-
 }

@@ -14,7 +14,8 @@ public class Price implements Serializable {
 	private long amount;
 	private CURRENCY currency;
 
-	/* enterprise applications will not use it definately*/
+	/* enterprise applications will not use it definately use ICurrencyConverter interface and 
+	 * write its application in application layer.*/
 	public void convertCurrency(CURRENCY from, CURRENCY to) {
 		if (CURRENCY.USD.equals(from) && CURRENCY.INR.equals(to)) {
 			this.amount = this.amount * 80L;

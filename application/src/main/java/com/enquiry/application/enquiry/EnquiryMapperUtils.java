@@ -2,10 +2,11 @@ package com.enquiry.application.enquiry;
 
 import org.springframework.beans.BeanUtils;
 
-import com.enquiry.contracts.enquiry.CreateEnquiryRequest;
+import com.enquiry.contracts.enquiry.EnquiryRequest;
 import com.enquiry.contracts.enquiry.EnquiryResponse;
 import com.enquiry.contracts.enquiry.EnquiryUpdateRequest;
 import com.enquiry.contracts.enquiry.OwnerUpdateRequest;
+import com.enquiry.domain.common.exceptions.DomainException;
 import com.enquiry.domain.enquiry.Enquiry;
 import com.enquiry.domain.enquiry.entities.OwnerUpdate;
 import com.enquiry.domain.enquiry.valueobjects.Price;
@@ -19,7 +20,7 @@ public final class EnquiryMapperUtils {
 	public static final EnquiryResponse createEnquiryResponse(Enquiry enquiry) {
 		EnquiryResponse dto = new EnquiryResponse();
 		try {
-			BeanUtils.copyProperties(dto, enquiry);
+			BeanUtils.copyProperties(enquiry , dto);
 			return dto;
 		} catch (Exception e) {
 			log.error("{}", e);
@@ -27,25 +28,19 @@ public final class EnquiryMapperUtils {
 		}
 	}
 
-	public static final Enquiry createEnquiryFromReq(CreateEnquiryRequest request) {
+	public static final Enquiry createEnquiryFromReq(EnquiryRequest request) throws DomainException{
 		/* fetch location info from request/jwt token details and set currency accordingly */
-		return Enquiry.createEnquiry(request.getUserID(), request.getApartmentID(), request.getRelationship(),
-				request.getTenentDescription(), request.getRequestedPrice(), request.getCurrency(), request.getTotalPersons());
+			return new Enquiry(request.getUserID() , null , request.getApartmentID(), Price.create(request.getRequestedPrice(), request.getCurrency()) ,
+					request.getTenentDescription(),  request.getTotalPersons() , request.getRelationship());
 	}
 	
-	public static final Enquiry createEnquiryUpdateFromReq(EnquiryUpdateRequest request) {
+	public static final Enquiry createEnquiryUpdateFromReq(EnquiryUpdateRequest request) throws DomainException {
 		/* fetch location info from request/jwt token details and set currency accordingly */
-		Enquiry enquiry = Enquiry.getEmptyInstance();
-		enquiry.setId(request.getId());
-		enquiry.setRequestedPrice(Price.create(request.getRequestedPrice(), request.getCurrency()));
-		enquiry.setTenentDescription(request.getTenentDescription());
-		enquiry.setTotalPersons(enquiry.getTotalPersons());
-		enquiry.setRelationship(enquiry.getRelationship());
-		
-		return enquiry;
+		return new Enquiry(request.getId() , null , null , null , Price.create(request.getRequestedPrice(), request.getCurrency()) ,
+				request.getTenentDescription(),  request.getTotalPersons() , request.getRelationship());
 	}
 	
-	public static final OwnerUpdate createOwnerUpdateFromReq(OwnerUpdateRequest request) {
+	public static final OwnerUpdate createOwnerUpdateFromReq(OwnerUpdateRequest request) throws DomainException {
 		return Enquiry.createOwnerUpdate(request.getEnquiryID() , Price.create(request.getNegotiatedPrice().getAmount(),
 				request.getNegotiatedPrice().getCurrency()), request.getStatus(), request.getRemarks());
 	}
