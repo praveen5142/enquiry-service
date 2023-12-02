@@ -30,13 +30,11 @@ public abstract class DomainModel<T extends Enum<T>> implements Serializable{
 	@EqualsAndHashCode.Include
 	@Getter protected final String id;
 	@Getter private Set<T> domainEvents = new HashSet<>();
-	@Getter private final String tableName;
 	
 	protected abstract void validate() throws DomainException;
 	
-	protected DomainModel(final String id , final String tableName) {
+	protected DomainModel(final String id) {
 		this.id = id == null ? this.createUUID() : id;
-		this.tableName = tableName;
 	}
 	
 	public void addDomainEvent(T event) {

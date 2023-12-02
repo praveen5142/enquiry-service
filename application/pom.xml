@@ -36,6 +36,7 @@
 			<artifactId>contracts</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<!-- we exclude reactor core just to avoid different library version of reactor core from domain and infra dependency -->
 		<dependency>
 			<groupId>com.enquiry</groupId>
 			<artifactId>infra</artifactId>

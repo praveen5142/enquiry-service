@@ -32,7 +32,7 @@
 
 ### Benifits
 	* Easier migrations with least business logic / domain impact as domain module will not be touched.
-	* Prevents developers to write tightly coupled code.
+	* Prevents developers to write tightly coupled code and enforce to code for interfaces.
 	* Developers can focus on domain modeling and business logic and can delegate application and infra work 
 	  which are more of boilerplate codes to work later or to other devs.
 		EX: While writing business logic for enquiry aggregate we can just create PORTS/INTERFACES for DAO and SERVICE layers and can 

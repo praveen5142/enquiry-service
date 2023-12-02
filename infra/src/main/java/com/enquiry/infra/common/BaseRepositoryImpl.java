@@ -38,7 +38,7 @@ public abstract class BaseRepositoryImpl<E extends DomainModel<?>, T> implements
 			
 			return databaseClient.sql(databaseOperations.createInsertQuery()).bindValues(databaseOperations.createBindings(e))
 					.fetch().rowsUpdated()
-					.switchIfEmpty(Mono.error(new RuntimeException("Unable to insert into "+e.getTableName()+", check logs")))
+					.switchIfEmpty(Mono.error(new RuntimeException("Unable to insert into "+tableName+", check logs")))
 					.map(value -> e);
 
 		} catch (Exception exp) {
@@ -54,7 +54,7 @@ public abstract class BaseRepositoryImpl<E extends DomainModel<?>, T> implements
 		try {
 			return databaseClient.sql(databaseOperations.createUpdateQuery()).bindValues(databaseOperations.createBindings(e))
 					.fetch().rowsUpdated()
-					.switchIfEmpty(Mono.error(new RuntimeException("Unable to insert into "+e.getTableName()+", check logs")))
+					.switchIfEmpty(Mono.error(new RuntimeException("Unable to insert into "+tableName+", check logs")))
 					.map(value -> e);
 
 		} catch (Exception exp) {

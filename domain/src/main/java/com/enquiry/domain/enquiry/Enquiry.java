@@ -15,7 +15,6 @@ import com.enquiry.domain.enquiry.valueobjects.Price;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 
@@ -44,7 +43,7 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 	 * in this Aggregate and race conditions should not occur. Only aggregateRoots will be 
 	 * reffered using IDs , Entities should not exist in other aggregates.
 	 */
-	@Getter @Setter private List<OwnerUpdate> ownerUpdates = new ArrayList<>();
+	@Getter private List<OwnerUpdate> ownerUpdates = new ArrayList<>();
 	@Getter private String apartmentID;
 	@Getter private Price requestedPrice;
 	@Getter private String tenentDescription;
@@ -54,7 +53,7 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 	// new object
 	public Enquiry(String userID, List<OwnerUpdate> ownerUpdates, String apartmentID, Price requestedPrice,
 			String tenentDescription, long totalPersons, String relationship) throws DomainException{
-		super(null , TABLE_NAME);
+		super(null);
 		this.userID = userID;
 		if(ownerUpdates != null) this.ownerUpdates = ownerUpdates;
 		this.apartmentID = apartmentID;
@@ -65,13 +64,12 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 		
 		/* add Domain events for newly created enquiry to publish info about this aggregate */
 		addDomainEvent(ENQUIRY_EVENTS.NEW_ENQUIRY);
-		
 		validate();
 	}
 	
 	public Enquiry(String id, String userID, List<OwnerUpdate> ownerUpdates, String apartmentID, Price requestedPrice,
 			String tenentDescription, long totalPersons, String relationship) throws DomainException{
-		super(id , TABLE_NAME);
+		super(id);
 		this.userID = userID;
 		if(ownerUpdates != null) this.ownerUpdates = ownerUpdates;
 		this.apartmentID = apartmentID;
@@ -79,7 +77,6 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 		this.tenentDescription = tenentDescription;
 		this.totalPersons = totalPersons;
 		this.relationship = relationship;
-		
 		validate();
 	}
 	
@@ -92,6 +89,12 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 		return new OwnerUpdate(enquiryID, requestedPrice, status, remarks);
 	}
 	
+	/** Aggregates should provide interfaces/methods to provide access to its members.
+	 * Setters or @enquiry.getOwnerUpdates().add(ownerUpdate) , this is considerd as 
+	 * anti design pattern.
+	 * 
+	 * @param ownerUpdate
+	 */
 	public void addOwnerUpdate(OwnerUpdate ownerUpdate) {
 		this.ownerUpdates.add(ownerUpdate);
 	}
@@ -107,8 +110,8 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 		this.tenentDescription = tenentDescription;
 		this.totalPersons = totalPersons;
 		this.relationship = relationship;
-		addDomainEvent(ENQUIRY_EVENTS.ENQUIRY_UPDATED);
 		
+		addDomainEvent(ENQUIRY_EVENTS.ENQUIRY_UPDATED);
 		validate();
 	}
 

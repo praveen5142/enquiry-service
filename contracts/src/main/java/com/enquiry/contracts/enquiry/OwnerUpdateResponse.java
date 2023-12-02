@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class OwnerUpdateResponse implements Serializable{
 	private static final long serialVersionUID = -8316481290617576842L;
 	
+	private String id;
 	private String enquiryID;
 	private PriceDTO negotiatedPrice;
 	private String status;
