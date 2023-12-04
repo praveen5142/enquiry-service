@@ -11,4 +11,6 @@ public interface IBaseRepository <E , T>{
 	public Mono<E> update(E e);
 	public Mono<Boolean> available(T id);
 	public Mono<Void> createSchema();
+	abstract Mono<E> populate(E e);
+	abstract Flux<E> populateAll(Flux<E> e);
 }

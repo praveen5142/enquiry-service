@@ -1,5 +1,6 @@
 package com.enquiry.infra.enquiry.mappers;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +24,7 @@ public class EnquiryDatabaseOperations implements IDatabaseOperations<Enquiry>{
 					row.get("apartmentID", String.class),
 					Price.create(row.get("requestedPrice", Long.class), row.get("currency", String.class)),
 					row.get("tenentDescription", String.class), row.get("totalPersons", Long.class),
-					row.get("relationship", String.class));
-
+					row.get("relationship", String.class) , row.get("lastUpdated" , LocalDateTime.class));
 		}catch (Exception e) {
 			log.error("Error while mapping {} " , e);
 			throw new DatabaseException(e.getMessage());
@@ -43,6 +43,7 @@ public class EnquiryDatabaseOperations implements IDatabaseOperations<Enquiry>{
 		bindings.put("totalPersons", e.getTotalPersons());
 		bindings.put("tenentDescription", e.getTenentDescription());
 		bindings.put("relationship", e.getRelationship());
+		bindings.put("lastUpdated", e.getLastUpdated());
 		
 		return bindings;
 	}

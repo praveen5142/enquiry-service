@@ -1,5 +1,7 @@
 package com.enquiry.application.enquiry;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.BeanUtils;
 
 import com.enquiry.contracts.enquiry.EnquiryRequest;
@@ -31,13 +33,13 @@ public final class EnquiryMapperUtils {
 	public static final Enquiry createEnquiryFromReq(EnquiryRequest request) throws DomainException{
 		/* fetch location info from request/jwt token details and set currency accordingly */
 			return new Enquiry(request.getUserID() , null , request.getApartmentID(), Price.create(request.getRequestedPrice(), request.getCurrency()) ,
-					request.getTenentDescription(),  request.getTotalPersons() , request.getRelationship());
+					request.getTenentDescription(),  request.getTotalPersons() , request.getRelationship() , LocalDateTime.now());
 	}
 	
 	public static final Enquiry createEnquiryUpdateFromReq(EnquiryUpdateRequest request) throws DomainException {
 		/* fetch location info from request/jwt token details and set currency accordingly */
 		return new Enquiry(request.getId() , null , null , null , Price.create(request.getRequestedPrice(), request.getCurrency()) ,
-				request.getTenentDescription(),  request.getTotalPersons() , request.getRelationship());
+				request.getTenentDescription(),  request.getTotalPersons() , request.getRelationship() , LocalDateTime.now());
 	}
 	
 	public static final OwnerUpdate createOwnerUpdateFromReq(OwnerUpdateRequest request) throws DomainException {

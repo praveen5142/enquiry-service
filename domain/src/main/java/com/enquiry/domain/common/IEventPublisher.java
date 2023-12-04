@@ -12,6 +12,6 @@ import reactor.core.publisher.Mono;
  *
  * @param <T>
  */
-public interface IEventPublisher<E extends DomainModel<?> , T> {
+public interface IEventPublisher<E extends DomainModel<?>> {
 	public Mono<E> publish(E e);
 }

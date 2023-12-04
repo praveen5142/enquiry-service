@@ -1,5 +1,6 @@
 package com.enquiry.domain.enquiry;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +50,11 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 	@Getter private String tenentDescription;
 	@Getter private long totalPersons;
 	@Getter private String relationship;
+	@Getter private LocalDateTime lastUpdated;
 	
 	// new object
 	public Enquiry(String userID, List<OwnerUpdate> ownerUpdates, String apartmentID, Price requestedPrice,
-			String tenentDescription, long totalPersons, String relationship) throws DomainException{
+			String tenentDescription, long totalPersons, String relationship , LocalDateTime lastUpdated) throws DomainException{
 		super(null);
 		this.userID = userID;
 		if(ownerUpdates != null) this.ownerUpdates = ownerUpdates;
@@ -61,6 +63,7 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 		this.tenentDescription = tenentDescription;
 		this.totalPersons = totalPersons;
 		this.relationship = relationship;
+		this.lastUpdated = lastUpdated;
 		
 		/* add Domain events for newly created enquiry to publish info about this aggregate */
 		addDomainEvent(ENQUIRY_EVENTS.NEW_ENQUIRY);
@@ -68,7 +71,7 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 	}
 	
 	public Enquiry(String id, String userID, List<OwnerUpdate> ownerUpdates, String apartmentID, Price requestedPrice,
-			String tenentDescription, long totalPersons, String relationship) throws DomainException{
+			String tenentDescription, long totalPersons, String relationship , LocalDateTime lastUpdated) throws DomainException{
 		super(id);
 		this.userID = userID;
 		if(ownerUpdates != null) this.ownerUpdates = ownerUpdates;
@@ -77,6 +80,8 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 		this.tenentDescription = tenentDescription;
 		this.totalPersons = totalPersons;
 		this.relationship = relationship;
+		this.lastUpdated = lastUpdated;
+		
 		validate();
 	}
 	
@@ -87,6 +92,17 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 
 	public static final OwnerUpdate createOwnerUpdate(String enquiryID , Price requestedPrice, String status , String remarks) throws DomainException {
 		return new OwnerUpdate(enquiryID, requestedPrice, status, remarks);
+	}
+	
+	/** Aggregates should provide interfaces/methods to provide access to its members.
+	 * Setters or @enquiry.getOwnerUpdates().add(ownerUpdate) , this is considerd as 
+	 * anti design pattern.
+	 * 
+	 * @param ownerUpdate
+	 */
+	public void addNewOwnerUpdate(OwnerUpdate ownerUpdate) {
+		this.ownerUpdates.add(ownerUpdate);
+		this.lastUpdated = LocalDateTime.now();
 	}
 	
 	/** Aggregates should provide interfaces/methods to provide access to its members.
@@ -110,6 +126,7 @@ public class Enquiry extends DomainModel<ENQUIRY_EVENTS>{
 		this.tenentDescription = tenentDescription;
 		this.totalPersons = totalPersons;
 		this.relationship = relationship;
+		this.lastUpdated = LocalDateTime.now();
 		
 		addDomainEvent(ENQUIRY_EVENTS.ENQUIRY_UPDATED);
 		validate();

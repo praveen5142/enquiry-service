@@ -37,7 +37,7 @@ public abstract class DomainModel<T extends Enum<T>> implements Serializable{
 		this.id = id == null ? this.createUUID() : id;
 	}
 	
-	public void addDomainEvent(T event) {
+	protected void addDomainEvent(T event) {
 		this.domainEvents.add(event);
 	}
 	
